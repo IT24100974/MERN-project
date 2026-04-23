@@ -23,7 +23,10 @@ app.get('/', (req, res) => {
 // Connect to MongoDB & start server
 const PORT = process.env.PORT || 5000;
 mongoose
-  .connect(process.env.MONGO_URI)
+  .connect(process.env.MONGO_URI, {
+    serverSelectionTimeoutMS: 5000,
+    family: 4  // 👈 forces IPv4, fixes most ECONNREFUSED errors
+  })
   .then(() => {
     console.log('✅ Connected to MongoDB');
     app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
